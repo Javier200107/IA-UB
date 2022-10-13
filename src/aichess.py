@@ -43,23 +43,37 @@ class Aichess():
         else:
             self.chess = chess.Chess([], False)
 
-        self.listNextStates = []
-        self.listVisitedStates = []
+        self.listNextStatesW = []
+        self.listVisitedStatesW = []
+        self.listNextStatesB = []
+        self.listVisitedStatesB = []
         self.pathToTarget = []
-        self.currentStateW = self.chess.boardSim.currentStateW;
-        self.depthMax = 8;
+        self.currentStateW = self.chess.boardSim.currentStateW
+        self.currentStateB = self.chess.boardSim.currentStateB
+        self.depthMax = 8
         self.checkMate = False
 
-    def getCurrentState(self):
+    def getCurrentStateW(self):
 
-        return self.myCurrentStateW
+        return self.currentStateW
+
+    def getCurrentStateB(self):
+
+        return self.currentStateB
 
     def getListNextStatesW(self, myState):
 
         self.chess.boardSim.getListNextStatesW(myState)
-        self.listNextStates = self.chess.boardSim.listNextStates.copy()
+        self.listNextStatesW = self.chess.boardSim.listNextStatesW.copy()
 
-        return self.listNextStates
+        return self.listNextStatesW
+
+    def getListNextStatesB(self, myState):
+
+        self.chess.boardSim.getListNextStatesB(myState)
+        self.listNextStatesW = self.chess.boardSim.listNextStatesB.copy()
+
+        return self.listNextStatesB
 
     def isSameState(self, a, b):
 
@@ -82,51 +96,20 @@ class Aichess():
 
     def isVisited(self, mystate):
 
-        if (len(self.listVisitedStates) > 0):
+        if (len(self.listVisitedStatesW) > 0):
             perm_state = list(permutations(mystate))
 
             isVisited = False
             for j in range(len(perm_state)):
 
-                for k in range(len(self.listVisitedStates)):
+                for k in range(len(self.listVisitedStatesW)):
 
-                    if self.isSameState(list(perm_state[j]), self.listVisitedStates[k]):
+                    if self.isSameState(list(perm_state[j]), self.listVisitedStatesW[k]):
                         isVisited = True
 
             return isVisited
         else:
             return False
-
-    def isCheckMate(self, mystate):
-
-        # Your Code
-        
-        
-        
-
-    def DepthFirstSearch(self, currentState, depth):
-    
-        # Your Code here
-
-
- 
-    def BreadthFirstSearch(self, currentState):
-            
-        # Your Code here
-
-
-
-    def BestFirstSearch(self, currentState):
-            
-        # Your Code here
-                
-                
-                
-    def AStarSearch(self, currentState):
-            
-        # Your Code here
-        
-        
 
 def translate(s):
     """
@@ -179,14 +162,14 @@ if __name__ == "__main__":
     # it uses board to get them... careful 
     aichess.getListNextStatesW(currentState)
     #   aichess.getListNextStatesW([[7,4,2],[7,4,6]])
-    print("list next states ", aichess.listNextStates)
+    print("list next states ", aichess.listNextStatesW)
 
     # starting from current state find the end state (check mate) - recursive function
     # aichess.chess.boardSim.listVisitedStates = []
     # find the shortest path, initial depth 0
     depth = 0
-    aichess.BreadthFirstSearch(currentState)
-    #aichess.DepthFirstSearch(currentState, depth)
+    # aichess.BreadthFirstSearch(currentState)
+    # aichess.DepthFirstSearch(currentState, depth)
 
     # MovesToMake = ['1e','2e','2e','3e','3e','4d','4d','3c']
 
@@ -207,5 +190,5 @@ if __name__ == "__main__":
 
     # aichess.chess.boardSim.print_board()
     print("#Move sequence...  ", aichess.pathToTarget)
-    print("#Visited sequence...  ", aichess.listVisitedStates)
+    print("#Visited sequence...  ", aichess.listVisitedStatesW)
     print("#Current State...  ", aichess.chess.board.currentStateW)
